@@ -2,9 +2,11 @@ library(nnet)
 library(tidyverse)
 library(caret)
 
-train <- read.csv("clean.csv")
-train <- train[,2:82]
+# train <- read.csv("clean.csv")
+# train <- train[,2:82]
 
+train <- read.csv("clean1.csv")
+train <- train[,2:82]
 
 nzv_cols <- nearZeroVar(train)
 
@@ -25,12 +27,12 @@ x <- train_no_factors %>% filter(train_no_factors$GrLivArea < 4000)
 plot(x$SalePrice, x$GrLivArea, xlab = "Sale Price", ylab = "Gr Living Area") 
 
 #Divide the data into training and test
-training_set <- train_no_factors[1:1100,]
+training_set <- train_no_factors[1:1460,]
 
 
 # Correlation plot of the variables
 str(training_set)
-corrplot::corrplot(cor(train_no_factors[1:1100,]), method = "circle", type = "lower", diag = FALSE, order = "FPC", tl.cex = 0.6, tl.col = "black") #  plot matrix and ordered by first principal component
+corrplot::corrplot(cor(train_no_factors[1:1460,]), method = "circle", type = "lower", diag = FALSE, order = "FPC", tl.cex = 0.6, tl.col = "black") #  plot matrix and ordered by first principal component
 
 
 # Build the model
@@ -43,8 +45,8 @@ fitnn = nnet(SalePrice ~ OverallQual + GrLivArea + GarageCars + GarageArea + X1s
 
 
 #Predict the data for test
-P = predict(fitnn, train_no_factors[1101:1460, 2:27])
-pred = data.frame(predicted = P, actual = train_no_factors[1101:1460, 28])
+P = predict(fitnn, train_no_factors[1461:2919, 2:27])
+pred = data.frame(predicted = P, actual = train_no_factors[1461:2919, 28])
 head(pred)
 
 # plot prediction vs actual values
